@@ -43,22 +43,22 @@ const table = {
         index: 7
     },
     {
-        name: 'Diff WAX',
+        name: 'Profit TM',
         sort: 'unsorted',
         index: 8
     },
     {
-        name: 'Diff Shadow',
+        name: 'Diff WAX',
         sort: 'unsorted',
         index: 9
     },
     {
-        name: 'Profit TM',
+        name: 'Profit WAX',
         sort: 'unsorted',
         index: 10
     },
     {
-        name: 'Profit WAX',
+        name: 'Diff Shadow',
         sort: 'unsorted',
         index: 11
     },
@@ -105,15 +105,15 @@ const table = {
                         <td>${this.currentData[i].name}</td>
                         <td>${this.currentData[i].steamVolume}</td>
                         <td>${this.currentData[i].prices.buff163.sourcePrice/100}¥</td>
-                        <td>${this.currentData[i].prices.buff163.price/100}$</th>
+                        <td>${this.currentData[i].prices.buff163.price/100}$</td>
                         <td>${this.currentData[i].prices.csgotm_avg7.price/100}$</td>
                         <td>${this.currentData[i].prices.waxpeer_avg7.price/100}$</td>
                         <td>${this.currentData[i].prices.shadowpay_avg7.price/100}$</td>
                         <td>${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100}$</td>
-                        <td>${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100}$</td>
-                        <td>${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100}$</td>
                         <td>${Math.round((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100)}%</td>
+                        <td>${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100}$</td>
                         <td>${Math.round((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100)}%</td>
+                        <td>${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100}$</td>
                         <td>${Math.round((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100)}%</td>
                     </tr>
                 `
@@ -241,16 +241,16 @@ const table = {
                     return item.prices.csgotm_avg7.price - item.prices.buff163.price;
                 }
                 case 8: {
-                    return item.prices.waxpeer_avg7.price -item.prices.buff163.price;
-                }
-                case 9: {
-                    return item.prices.shadowpay_avg7.price - item.prices.buff163.price;
-                }
-                case 10: {
                     return ((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
-                case 11: {
+                case 9: {
+                    return item.prices.waxpeer_avg7.price -item.prices.buff163.price;
+                }
+                case 10: {
                     return ((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
+                }
+                case 11: {
+                    return item.prices.shadowpay_avg7.price - item.prices.buff163.price;
                 }
                 case 12: {
                     return ((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price)
