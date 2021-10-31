@@ -3,55 +3,55 @@ const table = {
     currentItemsLimit: 100,
     currentData: [],
     headers: [{
-        name: 'name',
+        name: 'Item',
         sort: 'unsorted'
     },
     {
-        name: 'steamVolume',
+        name: 'Volume',
         sort: 'unsorted'
     },
     {
-        name: 'buff163, sourcePrice',
+        name: 'BUFF (¥)',
         sort: 'unsorted'
     },
     {
-        name: 'buff163, price',
+        name: 'BUFF ($)',
         sort: 'unsorted'
     },
     {
-        name: 'csgotm_avg7, price',
+        name: 'TM ($)',
         sort: 'unsorted'
     },
     {
-        name: 'waxpeer_avg7, price',
+        name: 'WAX ($)',
         sort: 'unsorted'
     },
     {
-        name: 'shadowpay_avg7, price',
+        name: 'Shadow ($)',
         sort: 'unsorted'
     },
     {
-        name: 'csgotm_avg7, price - buff163, price',
+        name: 'Diff TM ($)',
         sort: 'unsorted'
     },
     {
-        name: 'waxpeer_avg7, price - buff163, price',
+        name: 'Diff WAX ($)',
         sort: 'unsorted'
     },
     {
-        name: 'shadowpay_avg7, price - buff163, price',
+        name: 'Diff Shadow ($)',
         sort: 'unsorted'
     },
     {
-        name: 'różnica 1 / cena buff price',
+        name: 'Profit TM',
         sort: 'unsorted'
     },
     {
-        name: 'różnica 2 / cena buff price',
+        name: 'Profit WAX',
         sort: 'unsorted'
     },
     {
-        name: 'różnica 3 / cena buff price',
+        name: 'Profit Shadow',
         sort: 'unsorted'
     }],
     run: async function() {
