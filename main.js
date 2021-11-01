@@ -100,18 +100,17 @@ const table = {
                     <tr>
                         <td>${this.currentData[i].name}</td>
                         <td>${this.currentData[i].steamVolume != 0 ? this.currentData[i].steamVolume : '-'}</td>
-                        <td>${this.currentData[i].prices.buff163.price != 0 ? this.currentData[i].prices.buff163.price/100 + '$' : '-'}</th>
-                        <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? this.currentData[i].prices.csgotm_avg7.price/100 + '$' : '-'}</td>
-                        <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? this.currentData[i].prices.waxpeer_avg7.price/100 + '$' : '-'}</td>
-                        <td>${this.currentData[i].prices.shadowpay_avg7.price != 0 ? this.currentData[i].prices.shadowpay_avg7.price/100 + '$' : '-'}</td>
-                        <td class="${maxProfit === 'TM' ? 'background-green' : minProfit === 'TM' ? 'background-red' : ''}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? (this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100 + '$' : '-'})</td>
-                        <td class="${maxProfit === 'WAX' ? 'background-green' : minProfit === 'WAX' ? 'background-red' : ''}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? (this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100 + '$' : '-'})</td>
-                        <td class="${maxProfit === 'Shadow' ? 'background-green' : minProfit === 'Shadow' ? 'background-red' : ''}">${ profitShadow > -100 ? profitShadow + '% ' : '-'}(${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? (this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100 + '$' : '-'})</td>
+                        <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
+                        <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? (this.currentData[i].prices.csgotm_avg7.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? (this.currentData[i].prices.waxpeer_avg7.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.currentData[i].prices.shadowpay_avg7.price != 0 ? (this.currentData[i].prices.shadowpay_avg7.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td class="${maxProfit === 'TM' ? 'background-green' : minProfit === 'TM' ? 'background-red' : ''}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${maxProfit === 'WAX' ? 'background-green' : minProfit === 'WAX' ? 'background-red' : ''}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${maxProfit === 'Shadow' ? 'background-green' : minProfit === 'Shadow' ? 'background-red' : ''}">${ profitShadow > -100 ? profitShadow + '% ' : '-'}(${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${medianProfit}%</td>
                     </tr>
                 `
                 } catch(error) {
-                    console.log(error);
                     continue;
                 }
             }
@@ -199,7 +198,7 @@ const table = {
             items[rightIndex] = temp;
         }
         table.toggleLoading(true);
-        table.currentData = table.currentData.filter(item => table.getItemValueByHeaderIndex(item, headerIndex) > -1 && isFinite(table.getItemValueByHeaderIndex(item, headerIndex)));
+        table.currentData = table.currentData.filter(item => table.getItemValueByHeaderIndex(item, headerIndex) > -1 && isFinite(table.getItemValueByHeaderIndex(item, headerIndex)) && table.getItemValueByHeaderIndex(item, headerIndex) != 0);
         await quickSort(table.currentData, 0, table.currentData.length - 1, headerIndex, sortType).then(result => {
             table.currentData = result;
             table.createTable();
@@ -272,16 +271,16 @@ const table = {
                 const to = form.elements.namedItem('to').value;
                 if (!from || !to) return;
                 if (index == 0) {
-                    table.currentData = table.currentData.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 3)/100 >= from && table.getItemValueByHeaderIndex(item, 3)/100 <= to
+                    table.currentData = table.data.filter(item => {
+                        return table.getItemValueByHeaderIndex(item, 2)/100 >= from && table.getItemValueByHeaderIndex(item, 2)/100 <= to
                     })
                 } else if (index == 1) {
-                    table.currentData = table.currentData.filter(item => {
+                    table.currentData = table.data.filter(item => {
                         return table.getItemValueByHeaderIndex(item, 1) >= from && table.getItemValueByHeaderIndex(item, 1) <= to
                     })
                 } else {
-                    table.currentData = table.currentData.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 10) <= to
+                    table.currentData = table.data.filter(item => {
+                        return table.getItemValueByHeaderIndex(item, 9) >= from && table.getItemValueByHeaderIndex(item, 9) <= to
                     })
                 }
                 table.createTable();
