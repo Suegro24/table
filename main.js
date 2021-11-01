@@ -18,44 +18,39 @@ const table = {
         index: 2
     },
     {
-        name: 'BUFF',
+        name: 'TM',
         sort: 'unsorted',
         index: 3
     },
     {
-        name: 'TM',
+        name: 'WAX',
         sort: 'unsorted',
         index: 4
     },
     {
-        name: 'WAX',
+        name: 'Shadow',
         sort: 'unsorted',
         index: 5
     },
     {
-        name: 'Shadow',
+        name: 'Profit TM',
         sort: 'unsorted',
         index: 6
     },
     {
-        name: 'Profit TM',
+        name: 'Profit WAX',
         sort: 'unsorted',
         index: 7
     },
     {
-        name: 'Profit WAX',
+        name: 'Profit Shadow',
         sort: 'unsorted',
         index: 8
     },
     {
-        name: 'Profit Shadow',
-        sort: 'unsorted',
-        index: 9
-    },
-    {
         name: 'Median',
         sort: 'unsorted',
-        index: 10
+        index: 9
     }],
     run: async function() {
         await this.loadData().then(() => {
@@ -105,19 +100,17 @@ const table = {
                     <tr>
                         <td>${this.currentData[i].name}</td>
                         <td>${this.currentData[i].steamVolume != 0 ? this.currentData[i].steamVolume : '-'}</td>
-                        <td>${this.currentData[i].prices.buff163.sourcePrice  != 0 ? this.currentData[i].prices.buff163.sourcePrice/100 : '-'}</td>
-                        <td>${this.currentData[i].prices.buff163.price != 0 ? this.currentData[i].prices.buff163.price/100 : '-'}</th>
-                        <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? this.currentData[i].prices.csgotm_avg7.price/100 : '-'}</td>
-                        <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? this.currentData[i].prices.waxpeer_avg7.price/100 : '-'}</td>
-                        <td>${this.currentData[i].prices.shadowpay_avg7.price != 0 ? this.currentData[i].prices.shadowpay_avg7.price/100 : '-'}</td>
-                        <td class="${maxProfit === 'TM' ? 'background-green' : minProfit === 'TM' ? 'background-red' : ''}">${ profitTM > -100 ? profitTM + '%' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? (this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100 + '$' : '-'})</td>
-                        <td class="${maxProfit === 'WAX' ? 'background-green' : minProfit === 'WAX' ? 'background-red' : ''}">${ profitWAX > -100 ? profitWAX + '%' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? (this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100 + '$' : '-'})</td>
-                        <td class="${maxProfit === 'Shadow' ? 'background-green' : minProfit === 'Shadow' ? 'background-red' : ''}">${ profitShadow > -100 ? profitShadow + '%' : '-'}(${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? (this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100 + '$' : '-'})</td>
+                        <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
+                        <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? (this.currentData[i].prices.csgotm_avg7.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? (this.currentData[i].prices.waxpeer_avg7.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.currentData[i].prices.shadowpay_avg7.price != 0 ? (this.currentData[i].prices.shadowpay_avg7.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td class="${maxProfit === 'TM' ? 'background-green' : minProfit === 'TM' ? 'background-red' : ''}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${maxProfit === 'WAX' ? 'background-green' : minProfit === 'WAX' ? 'background-red' : ''}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${maxProfit === 'Shadow' ? 'background-green' : minProfit === 'Shadow' ? 'background-red' : ''}">${ profitShadow > -100 ? profitShadow + '% ' : '-'}(${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${medianProfit}%</td>
                     </tr>
                 `
                 } catch(error) {
-                    console.log(error);
                     continue;
                 }
             }
@@ -205,7 +198,7 @@ const table = {
             items[rightIndex] = temp;
         }
         table.toggleLoading(true);
-        table.currentData = table.currentData.filter(item => table.getItemValueByHeaderIndex(item, headerIndex) > -1 && isFinite(table.getItemValueByHeaderIndex(item, headerIndex)));
+        table.currentData = table.currentData.filter(item => table.getItemValueByHeaderIndex(item, headerIndex) > -1 && isFinite(table.getItemValueByHeaderIndex(item, headerIndex)) && table.getItemValueByHeaderIndex(item, headerIndex) != 0);
         await quickSort(table.currentData, 0, table.currentData.length - 1, headerIndex, sortType).then(result => {
             table.currentData = result;
             table.createTable();
@@ -223,30 +216,27 @@ const table = {
                     return item.steamVolume;
                 }
                 case 2: {
-                    return item.prices.buff163.sourcePrice;
-                }
-                case 3: {
                     return item.prices.buff163.price;
                 }
-                case 4: {
+                case 3: {
                     return item.prices.csgotm_avg7.price;
                 }
-                case 5: {
+                case 4: {
                     return item.prices.waxpeer_avg7.price;
                 }
-                case 6: {
+                case 5: {
                     return item.prices.shadowpay_avg7.price;
                 }
-                case 7: {
+                case 6: {
                     return ((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
-                case 8: {
+                case 7: {
                     return ((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
-                case 9: {
+                case 8: {
                     return ((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price)
                 }
-                case 10: {
+                case 9: {
                     const profitTM = Math.round((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     const profitWAX = Math.round((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     const profitShadow = Math.round((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
@@ -281,16 +271,16 @@ const table = {
                 const to = form.elements.namedItem('to').value;
                 if (!from || !to) return;
                 if (index == 0) {
-                    table.currentData = table.currentData.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 3)/100 >= from && table.getItemValueByHeaderIndex(item, 3)/100 <= to
+                    table.currentData = table.data.filter(item => {
+                        return table.getItemValueByHeaderIndex(item, 2)/100 >= from && table.getItemValueByHeaderIndex(item, 2)/100 <= to
                     })
                 } else if (index == 1) {
-                    table.currentData = table.currentData.filter(item => {
+                    table.currentData = table.data.filter(item => {
                         return table.getItemValueByHeaderIndex(item, 1) >= from && table.getItemValueByHeaderIndex(item, 1) <= to
                     })
                 } else {
-                    table.currentData = table.currentData.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 10) <= to
+                    table.currentData = table.data.filter(item => {
+                        return table.getItemValueByHeaderIndex(item, 9) >= from && table.getItemValueByHeaderIndex(item, 9) <= to
                     })
                 }
                 table.createTable();
