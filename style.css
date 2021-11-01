@@ -1,5 +1,5 @@
 body {
-    background-color: #9f9d9d;
+    background-color: #dedede;
     padding: 0;
     margin: 0;
 }
@@ -39,7 +39,7 @@ body {
 }
 
 .table tr:hover {
-    background-color: #ddd;
+    background-color: #6acfff;
 }
 
 .table th {
