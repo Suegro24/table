@@ -82,7 +82,7 @@ body {
     border: 8px solid #fff;
     border-radius: 50%;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #fff transparent transparent transparent;
+    border-color: #6acfff transparent transparent transparent;
   }
   .lds-ring div:nth-child(1) {
     animation-delay: -0.45s;
@@ -114,22 +114,6 @@ body {
   
   .container h2 {
     text-align: center;
-  }
-
-  .medianContainer ul {
-    list-style: none;
-    display: flex;
-    font-weight: 700;
-    padding-left: 0;
-  }
-
-  .medianContainer ul li {
-    margin-left: 20px;
-    padding: 5px;
-  }
-
-  .medianContainer ul li:first-child {
-    margin-left: 0;
   }
 
   .background-green {
