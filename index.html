@@ -10,14 +10,27 @@
 </head>
 <body>
     <header class="header">
-        <div class="container medianContainer">
-            <h2>Mediany</h2>
-        </div>
         <div class="container searchContainer">
-            <h2>Filtry</h2>
-            <form id="filterForm">
+            <h2>Filtr - BUFF($)</h2>
+            <form class="filterForm">
                 <input type="number" class="search" placeholder="Szukaj od (BUFF$)" name="from" required>
                 <input type="number" class="search" placeholder="Szukaj do (BUFF$)" name="to" required>
+                <button class="button" type="submit">Szukaj</button>
+            </form>
+        </div>
+        <div class="container searchContainer">
+            <h2>Filtr - Volume</h2>
+            <form class="filterForm">
+                <input type="number" class="search" placeholder="Szukaj od (Volume)" name="from" required>
+                <input type="number" class="search" placeholder="Szukaj do (Volume)" name="to" required>
+                <button class="button" type="submit">Szukaj</button>
+            </form>
+        </div>
+        <div class="container searchContainer">
+            <h2>Filtr - Median</h2>
+            <form class="filterForm">
+                <input type="number" class="search" placeholder="Szukaj od (Median)" name="from" required>
+                <input type="number" class="search" placeholder="Szukaj do (Median)" name="to" required>
                 <button class="button" type="submit">Szukaj</button>
             </form>
         </div>
