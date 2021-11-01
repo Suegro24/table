@@ -281,15 +281,15 @@ const table = {
                 const to = form.elements.namedItem('to').value;
                 if (!from || !to) return;
                 if (index == 0) {
-                    table.currentData = table.data.filter(item => {
+                    table.currentData = table.currentData.filter(item => {
                         return table.getItemValueByHeaderIndex(item, 3)/100 >= from && table.getItemValueByHeaderIndex(item, 3)/100 <= to
                     })
                 } else if (index == 1) {
-                    table.currentData = table.data.filter(item => {
+                    table.currentData = table.currentData.filter(item => {
                         return table.getItemValueByHeaderIndex(item, 1) >= from && table.getItemValueByHeaderIndex(item, 1) <= to
                     })
                 } else {
-                    table.currentData = table.data.filter(item => {
+                    table.currentData = table.currentData.filter(item => {
                         return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 10) <= to
                     })
                 }
