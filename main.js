@@ -223,7 +223,7 @@ const table = {
             items[rightIndex] = temp;
         }
         table.toggleLoading(true);
-        table.currentData = table.currentData.filter(item => table.getItemValueByHeaderIndex(item, headerIndex) > -1 && isFinite(table.getItemValueByHeaderIndex(item, headerIndex)) && table.getItemValueByHeaderIndex(item, headerIndex) != 0);
+        table.currentData = table.currentData.filter(item => typeof table.getItemValueByHeaderIndex(item, headerIndex) == 'string' || ( table.getItemValueByHeaderIndex(item, headerIndex) > -1 && isFinite(table.getItemValueByHeaderIndex(item, headerIndex)) && table.getItemValueByHeaderIndex(item, headerIndex) != 0));
         await quickSort(table.currentData, 0, table.currentData.length - 1, headerIndex, sortType).then(result => {
             table.currentData = result;
             table.createTable();
