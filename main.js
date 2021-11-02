@@ -64,6 +64,7 @@ const table = {
             this.initSearch();
             this.initSort();
             this.initFilterForm();
+            this.initFileForm();
         })
     },
     loadData: async function() {
@@ -321,6 +322,60 @@ const table = {
             });
         })
     },
+    initFileForm: function() {
+        const fileForm = document.getElementById("fileForm");
+        const csvFile = document.getElementById("csvFile");
+
+        const csvToArray = (str, delimiter = ',') => {
+            const headers = str.slice(0, str.indexOf("\n")).toLowerCase().split(delimiter);
+            const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+
+            let arr = rows.map(function (row) {
+                const values = row.split(delimiter);
+                const el = headers.reduce(function (object, header, index) {
+                  object[header] = values[index];
+                  return object;
+                }, {});
+                return el;
+              });
+
+              arr = arr.map(item => {
+                  if (!item.exterior) return item;
+                  if (item.exterior.endsWith("\r")) {
+                      item.exterior = item.exterior.slice(0, item.exterior.length - 2);
+                  }
+                  return item;
+              })
+            
+              return arr
+        }
+
+        fileForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const input = csvFile.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const text = e.target.result
+                const data = csvToArray(text);
+                table.currentData = table.data.filter(item => {
+                    let isFound = false;
+                    data.map(d => {
+                        if (item.name.toLowerCase().includes(d.name.toLowerCase()) && (d.exterior && item.name.toLowerCase().includes(d.exterior.toLowerCase()))) {
+                            isFound = true;
+                            return;
+                        }
+                    })
+                    if (isFound) return item;
+                }) 
+                console.log(table.currentData);
+                table.createTable();
+                table.initSort();
+            };
+
+            reader.readAsText(input);
+        });
+    }
 }
 
 table.run();

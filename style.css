@@ -137,3 +137,7 @@ body {
   .button:hover {
     opacity: .8;
   }
+
+  .button-file {
+    margin-top: 20px;
+  }
