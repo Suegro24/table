@@ -136,7 +136,7 @@ const table = {
     },
     initSearch: function() {
         const search = document.querySelector('#search');
-        ['change', 'paste', 'keyup'].forEach(evt => {
+        ['change'].forEach(evt => {
             search.addEventListener(`${evt}`, this.search, false);
         })
     },
@@ -285,7 +285,7 @@ const table = {
     initFilterForm: function() {
         const forms = document.querySelectorAll('.filterForm');
         forms.forEach(form => {
-            form.addEventListener('click', function(event) {
+            form.addEventListener('submit', function(event) {
                 event.preventDefault();
                 let result = table.data;
                 forms.forEach((f, index) => {
@@ -295,7 +295,7 @@ const table = {
                     if (!from || !to) return;
                     if (index == 0) {
                         result = result.filter(item => {
-                            return table.getItemValueByHeaderIndex(item, 3)/100 >= from && table.getItemValueByHeaderIndex(item, 2)/100 <= to
+                            return table.getItemValueByHeaderIndex(item, 3)/100 >= from && table.getItemValueByHeaderIndex(item, 3)/100 <= to
                         })
                     } else if (index == 1) {
                         result = result.filter(item => {
@@ -303,7 +303,7 @@ const table = {
                         })
                     } else {
                         result = result.filter(item => {
-                            return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 9) <= to
+                            return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 10) <= to
                         })
                     }
                 })
