@@ -136,13 +136,21 @@ const table = {
     },
     initSearch: function() {
         const search = document.querySelector('#search');
-        ['change'].forEach(evt => {
+        ['change', 'keyup', 'paste'].forEach(evt => {
             search.addEventListener(`${evt}`, this.search, false);
         })
     },
     search: function() {
         const searchedText = document.querySelector('#search').value;
-        table.currentData = table.data.filter(item => item.name.toLowerCase().includes(searchedText.toLowerCase()));
+        if (searchedText.length === 0) {
+            table.currentData = table.data
+        }
+        else if (searchedText.length < 3) {
+            return;
+        }
+        else {
+            table.currentData = table.data.filter(item => item.name.toLowerCase().includes(searchedText.toLowerCase()));
+        }
         table.createTable();
         table.initSort();
     },
