@@ -142,7 +142,6 @@ const table = {
     },
     search: function() {
         const searchedText = document.querySelector('#search').value;
-        console.log(searchedText.length);
         if (searchedText.length === 0) {
             table.currentData = table.data
         }
