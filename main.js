@@ -13,62 +13,78 @@ const table = {
         index: 1
     },
     {
-        name: 'BUFF',
+        name: 'Liquidity',
         sort: 'unsorted',
         index: 2
     },
     {
-        name: 'TM',
+        name: 'BUFF',
         sort: 'unsorted',
         index: 3
     },
     {
-        name: 'WAX',
+        name: 'TM',
         sort: 'unsorted',
         index: 4
     },
     {
-        name: 'Shadow',
+        name: 'WAX',
         sort: 'unsorted',
         index: 5
     },
     {
-        name: 'Profit TM',
+        name: 'Shadow',
         sort: 'unsorted',
         index: 6
     },
     {
-        name: 'Profit WAX',
+        name: 'Profit TM',
         sort: 'unsorted',
         index: 7
     },
     {
-        name: 'Profit Shadow',
+        name: 'Profit WAX',
         sort: 'unsorted',
         index: 8
     },
     {
-        name: 'Median',
+        name: 'Profit Shadow',
         sort: 'unsorted',
         index: 9
+    },
+    {
+        name: 'Median',
+        sort: 'unsorted',
+        index: 10
     }],
     run: async function() {
         await this.loadData().then(() => {
             this.createTable();
             this.toggleLoading(false);
+            this.initSearch();
+            this.initSort();
+            this.initFilterForm();
         })
-        this.initSearch();
-        this.initSort();
-        this.initFilterForm();
     },
     loadData: async function() {
-        const response = await fetch('./getAllItems.json');
-        const json = await response.json();
-        json.items = json.items.filter(item => {
-            return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker');
-        })
-        this.data = json.items;
-        this.currentData = json.items;
+        await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=buff163%2Ccsgotm_avg7%2Cwaxpeer_avg7%2Cshadowpay_avg7&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
+            .then(res => {
+                if (!res.ok) {
+                    alert('Failed to load data, please try again later');
+                }
+                return res.json()
+            })
+            .then(data => {
+                const json = data;
+                json.items = json.items.filter(item => {
+                    return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker');
+                })
+                table.data = json.items;
+                table.currentData = json.items;
+            })
+            .catch(error => {
+                console.error(error);
+            })
     },
     toggleLoading: async function(state) {
         const loading = document.querySelector('#loading');
@@ -100,6 +116,7 @@ const table = {
                     <tr>
                         <td>${this.currentData[i].name}</td>
                         <td>${this.currentData[i].steamVolume != 0 ? this.currentData[i].steamVolume : '-'}</td>
+                        <td>${Math.round(this.currentData[i].liquidity * 100)/100}</td>
                         <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
                         <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? (this.currentData[i].prices.csgotm_avg7.price/100).toFixed(2) + '$' : '-'}</td>
                         <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? (this.currentData[i].prices.waxpeer_avg7.price/100).toFixed(2) + '$' : '-'}</td>
@@ -216,27 +233,30 @@ const table = {
                     return item.steamVolume;
                 }
                 case 2: {
-                    return item.prices.buff163.price;
+                    return item.liquidity;
                 }
                 case 3: {
-                    return item.prices.csgotm_avg7.price;
+                    return item.prices.buff163.price;
                 }
                 case 4: {
-                    return item.prices.waxpeer_avg7.price;
+                    return item.prices.csgotm_avg7.price;
                 }
                 case 5: {
-                    return item.prices.shadowpay_avg7.price;
+                    return item.prices.waxpeer_avg7.price;
                 }
                 case 6: {
-                    return ((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
+                    return item.prices.shadowpay_avg7.price;
                 }
                 case 7: {
-                    return ((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
+                    return ((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
                 case 8: {
-                    return ((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price)
+                    return ((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
                 case 9: {
+                    return ((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price)
+                }
+                case 10: {
                     const profitTM = Math.round((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     const profitWAX = Math.round((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     const profitShadow = Math.round((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
@@ -264,25 +284,30 @@ const table = {
     },
     initFilterForm: function() {
         const forms = document.querySelectorAll('.filterForm');
-        forms.forEach((form, index) => {
+        forms.forEach(form => {
             form.addEventListener('click', function(event) {
                 event.preventDefault();
-                const from = form.elements.namedItem('from').value;
-                const to = form.elements.namedItem('to').value;
-                if (!from || !to) return;
-                if (index == 0) {
-                    table.currentData = table.data.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 2)/100 >= from && table.getItemValueByHeaderIndex(item, 2)/100 <= to
-                    })
-                } else if (index == 1) {
-                    table.currentData = table.data.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 1) >= from && table.getItemValueByHeaderIndex(item, 1) <= to
-                    })
-                } else {
-                    table.currentData = table.data.filter(item => {
-                        return table.getItemValueByHeaderIndex(item, 9) >= from && table.getItemValueByHeaderIndex(item, 9) <= to
-                    })
-                }
+                let result = table.data;
+                forms.forEach((f, index) => {
+                    const from = f.elements.namedItem('from').value;
+                    const to = f.elements.namedItem('to').value;
+
+                    if (!from || !to) return;
+                    if (index == 0) {
+                        result = result.filter(item => {
+                            return table.getItemValueByHeaderIndex(item, 3)/100 >= from && table.getItemValueByHeaderIndex(item, 2)/100 <= to
+                        })
+                    } else if (index == 1) {
+                        result = result.filter(item => {
+                            return table.getItemValueByHeaderIndex(item, 1) >= from && table.getItemValueByHeaderIndex(item, 1) <= to
+                        })
+                    } else {
+                        result = result.filter(item => {
+                            return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 9) <= to
+                        })
+                    }
+                })
+                table.currentData = result;
                 table.createTable();
                 table.initSort();
             });
