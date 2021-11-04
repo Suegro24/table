@@ -33,29 +33,19 @@ const table = {
         index: 5
     },
     {
-        name: 'Shadow',
+        name: 'Profit TM',
         sort: 'unsorted',
         index: 6
     },
     {
-        name: 'Profit TM',
+        name: 'Profit WAX',
         sort: 'unsorted',
         index: 7
     },
     {
-        name: 'Profit WAX',
+        name: 'Avg. TM/WAX',
         sort: 'unsorted',
         index: 8
-    },
-    {
-        name: 'Profit Shadow',
-        sort: 'unsorted',
-        index: 9
-    },
-    {
-        name: 'Median',
-        sort: 'unsorted',
-        index: 10
     }],
     run: async function() {
         await this.loadData().then(() => {
@@ -108,11 +98,11 @@ const table = {
                 try {
                     const profitTM = Math.round((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
                     const profitWAX = Math.round((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
-                    const profitShadow = Math.round((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
+                    /*const profitShadow = Math.round((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);*/
                     const maxProfit = profitTM > profitWAX ? profitTM > profitShadow ? 'TM' : 'Shadow' : profitWAX > profitShadow ? 'WAX' : 'Shadow';
                     const minProfit = profitTM < profitWAX ? profitTM < profitShadow ? 'TM' : 'Shadow' : profitWAX < profitShadow ? 'WAX' : 'Shadow';
                     
-                    const medianProfit = this.getMedian([profitTM, profitWAX, profitShadow]);
+                    const avgProfit = (profitTM + profitWAX) / 2;
                     table += `
                     <tr>
                         <td>${this.currentData[i].name}</td>
@@ -121,11 +111,9 @@ const table = {
                         <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
                         <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? (this.currentData[i].prices.csgotm_avg7.price/100).toFixed(2) + '$' : '-'}</td>
                         <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? (this.currentData[i].prices.waxpeer_avg7.price/100).toFixed(2) + '$' : '-'}</td>
-                        <td>${this.currentData[i].prices.shadowpay_avg7.price != 0 ? (this.currentData[i].prices.shadowpay_avg7.price/100).toFixed(2) + '$' : '-'}</td>
                         <td class="${maxProfit === 'TM' ? 'background-green' : minProfit === 'TM' ? 'background-red' : ''}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td class="${maxProfit === 'WAX' ? 'background-green' : minProfit === 'WAX' ? 'background-red' : ''}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
-                        <td class="${maxProfit === 'Shadow' ? 'background-green' : minProfit === 'Shadow' ? 'background-red' : ''}">${ profitShadow > -100 ? profitShadow + '% ' : '-'}(${(this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
-                        <td>${medianProfit}%</td>
+                        <td>${avgProfit}%</td>
                     </tr>
                 `
                 } catch(error) {
@@ -254,22 +242,15 @@ const table = {
                     return item.prices.waxpeer_avg7.price;
                 }
                 case 6: {
-                    return item.prices.shadowpay_avg7.price;
-                }
-                case 7: {
                     return ((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
-                case 8: {
+                case 7: {
                     return ((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
-                case 9: {
-                    return ((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price)
-                }
-                case 10: {
+                case 8: {
                     const profitTM = Math.round((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     const profitWAX = Math.round((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
-                    const profitShadow = Math.round((item.prices.shadowpay_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
-                    return table.getMedian([profitTM, profitWAX, profitShadow]);
+                    return table.avgProfit([profitTM, profitWAX]);
                 }
             }
         } catch(error) {
@@ -277,19 +258,19 @@ const table = {
         }
         
     },
-    getMedian: function(values){
+    avgProfit: function(values){
         if(values.length === 0) return 
       
         values.sort(function(a,b){
           return a-b;
         });
       
-        var half = Math.floor(values.length / 2);
+        /*var half = Math.floor(values.length / 2);
         
         if (values.length % 2)
           return values[half];
         
-        return (values[half - 1] + values[half]) / 2.0;
+        return (values[half - 1] + values[half]) / 2.0;*/
     },
     initFilterForm: function() {
         const forms = document.querySelectorAll('.filterForm');
