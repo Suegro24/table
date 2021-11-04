@@ -50,11 +50,11 @@ const table = {
     run: async function() {
         await this.loadData().then(() => {
             this.createTable();
-            this.toggleLoading(false);
             this.initSearch();
             this.initSort();
             this.initFilterForm();
             this.initFileForm();
+            this.toggleLoading(false);
         })
     },
     loadData: async function() {
@@ -293,7 +293,7 @@ const table = {
                         })
                     } else {
                         result = result.filter(item => {
-                            return table.getItemValueByHeaderIndex(item, 10) >= from && table.getItemValueByHeaderIndex(item, 10) <= to
+                            return table.getItemValueByHeaderIndex(item, 8) >= from && table.getItemValueByHeaderIndex(item, 8) <= to
                         })
                     }
                 })
@@ -349,7 +349,6 @@ const table = {
                     })
                     if (isFound) return item;
                 }) 
-                console.log(table.currentData);
                 table.createTable();
                 table.initSort();
             };
