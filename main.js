@@ -332,7 +332,6 @@ const table = {
             reader.onload = function (e) {
                 const text = e.target.result
                 const data = csvToArray(text);
-                console.log(data);
                 table.currentData = table.data.filter(item => {
                     let isFound = false;
                     data.map(d => {
