@@ -98,9 +98,6 @@ const table = {
                 try {
                     const profitTM = Math.round((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
                     const profitWAX = Math.round((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
-                    const profitShadow = Math.round((this.currentData[i].prices.shadowpay_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
-                    const maxProfit = profitTM > profitWAX ? profitTM > profitShadow ? 'TM' : 'Shadow' : profitWAX > profitShadow ? 'WAX' : 'Shadow';
-                    const minProfit = profitTM < profitWAX ? profitTM < profitShadow ? 'TM' : 'Shadow' : profitWAX < profitShadow ? 'WAX' : 'Shadow';
                     const avgProfit = (profitTM + profitWAX) / 2;
                     table += `
                     <tr>
@@ -110,8 +107,8 @@ const table = {
                         <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
                         <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? (this.currentData[i].prices.csgotm_avg7.price/100).toFixed(2) + '$' : '-'}</td>
                         <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? (this.currentData[i].prices.waxpeer_avg7.price/100).toFixed(2) + '$' : '-'}</td>
-                        <td class="${maxProfit === 'TM' ? 'background-green' : minProfit === 'TM' ? 'background-red' : ''}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
-                        <td class="${maxProfit === 'WAX' ? 'background-green' : minProfit === 'WAX' ? 'background-red' : ''}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 50 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 50 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${avgProfit}%</td>
                     </tr>
                 `
