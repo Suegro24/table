@@ -312,9 +312,11 @@ const table = {
               });
 
               arr = arr.map(item => {
-                  if (!item.exterior) return item;
-                  if (item.exterior.endsWith("\r")) {
+                  if (item.exterior && item.exterior.endsWith("\r")) {
                       item.exterior = item.exterior.slice(0, item.exterior.length - 2);
+                  }
+                  if (item.name && item.name.endsWith("\r")) {
+                      item.name = item.name.slice(0, item.name.length - 2);
                   }
                   return item;
               })
@@ -330,6 +332,7 @@ const table = {
             reader.onload = function (e) {
                 const text = e.target.result
                 const data = csvToArray(text);
+                console.log(data);
                 table.currentData = table.data.filter(item => {
                     let isFound = false;
                     data.map(d => {
