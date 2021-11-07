@@ -68,7 +68,7 @@ const table = {
             .then(data => {
                 const json = data;
                 json.items = json.items.filter(item => {
-                    return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker');
+                    return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker') && !item.name.toLowerCase().includes('souvenir');
                 })
                 table.data = json.items;
                 table.currentData = json.items;
@@ -108,8 +108,8 @@ const table = {
                         <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
                         <td>${this.getItemValueByHeaderIndex(this.currentData[i], 4) != 0 ? (this.getItemValueByHeaderIndex(this.currentData[i], 4)/100).toFixed(2) + '$' : '-'}</td>
                         <td>${this.getItemValueByHeaderIndex(this.currentData[i], 5) != 0 ? (this.getItemValueByHeaderIndex(this.currentData[i], 5)/100).toFixed(2) + '$' : '-'}</td>
-                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 50 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
-                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 50 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 40 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 40 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${avgProfit}%</td>
                     </tr>
                 `
