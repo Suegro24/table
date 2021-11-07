@@ -96,8 +96,9 @@ const table = {
         table += `</tr>`;
             for (let i = 0; i < this.currentData.length; i++) {
                 try {
-                    const profitTM = Math.round((this.currentData[i].prices.csgotm.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
-                    const profitWAX = Math.round((this.currentData[i].prices.waxpeer.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
+                    const profitTM = Math.round((this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
+                    const profitWAX = Math.round((this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
+                    
                     const avgProfit = (profitTM + profitWAX) / 2;
                     table += `
                     <tr>
@@ -105,10 +106,10 @@ const table = {
                         <td>${this.currentData[i].steamVolume != 0 ? this.currentData[i].steamVolume : '-'}</td>
                         <td>${Math.round(this.currentData[i].liquidity * 100)/100}</td>
                         <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
-                        <td>${this.currentData[i].prices.csgotm.price != 0 ? (this.currentData[i].prices.csgotm.price/100).toFixed(2) + '$' : '-'}</td>
-                        <td>${this.currentData[i].prices.waxpeer.price != 0 ? (this.currentData[i].prices.waxpeer.price/100).toFixed(2) + '$' : '-'}</td>
-                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 50 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
-                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 50 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td>${this.getItemValueByHeaderIndex(this.currentData[i], 4) != 0 ? (this.getItemValueByHeaderIndex(this.currentData[i], 4)/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.getItemValueByHeaderIndex(this.currentData[i], 5) != 0 ? (this.getItemValueByHeaderIndex(this.currentData[i], 5)/100).toFixed(2) + '$' : '-'}</td>
+                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 50 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 50 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${avgProfit}%</td>
                     </tr>
                 `
@@ -232,20 +233,20 @@ const table = {
                     return item.prices.buff163.price;
                 }
                 case 4: {
-                    return item.prices.csgotm.price;
+                    return table.minOfValues(item.prices.csgotm.price, item.prices.csgotm_avg7.price, item.prices.csgotm_avg30.price, item.prices.csgotm_avg60.price, item.prices.csgotm_avg90.price);
                 }
                 case 5: {
-                    return item.prices.waxpeer.price;
+                    return table.minOfValues(item.prices.waxpeer.price, item.prices.waxpeer_avg.price, item.prices.waxpeer_avg7.price, item.prices.waxpeer_avg30.price, item.prices.waxpeer_avg60.price, item.prices.waxpeer_avg90.price);
                 }
                 case 6: {
-                    return ((item.prices.csgotm.price - item.prices.buff163.price)/item.prices.buff163.price);
+                    return ((table.getItemValueByHeaderIndex(item, 4) - item.prices.buff163.price)/item.prices.buff163.price);
                 }
                 case 7: {
-                    return ((item.prices.waxpeer.price - item.prices.buff163.price)/item.prices.buff163.price);
+                    return ((table.getItemValueByHeaderIndex(item, 5) - item.prices.buff163.price)/item.prices.buff163.price);
                 }
                 case 8: {
-                    const profitTM = Math.round((item.prices.csgotm.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
-                    const profitWAX = Math.round((item.prices.waxpeer.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
+                    const profitTM = Math.round((table.getItemValueByHeaderIndex(item, 4) - item.prices.buff163.price)/item.prices.buff163.price * 100);
+                    const profitWAX = Math.round((table.getItemValueByHeaderIndex(item, 5) - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     return table.avgProfit([profitTM, profitWAX]);
                 }
             }
@@ -348,6 +349,9 @@ const table = {
 
             reader.readAsText(input);
         });
+    },
+    minOfValues: function(...values) {
+        return Math.min(...values);
     }
 }
 
