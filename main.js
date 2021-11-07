@@ -58,7 +58,7 @@ const table = {
         })
     },
     loadData: async function() {
-        await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=buff163%2Ccsgotm_avg7%2Cwaxpeer_avg7%2Cshadowpay_avg7&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
+        await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=buff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
             .then(res => {
                 if (!res.ok) {
                     alert('Failed to load data, please try again later');
@@ -96,8 +96,8 @@ const table = {
         table += `</tr>`;
             for (let i = 0; i < this.currentData.length; i++) {
                 try {
-                    const profitTM = Math.round((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
-                    const profitWAX = Math.round((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
+                    const profitTM = Math.round((this.currentData[i].prices.csgotm.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
+                    const profitWAX = Math.round((this.currentData[i].prices.waxpeer.price - this.currentData[i].prices.buff163.price)/this.currentData[i].prices.buff163.price * 100);
                     const avgProfit = (profitTM + profitWAX) / 2;
                     table += `
                     <tr>
@@ -105,10 +105,10 @@ const table = {
                         <td>${this.currentData[i].steamVolume != 0 ? this.currentData[i].steamVolume : '-'}</td>
                         <td>${Math.round(this.currentData[i].liquidity * 100)/100}</td>
                         <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
-                        <td>${this.currentData[i].prices.csgotm_avg7.price != 0 ? (this.currentData[i].prices.csgotm_avg7.price/100).toFixed(2) + '$' : '-'}</td>
-                        <td>${this.currentData[i].prices.waxpeer_avg7.price != 0 ? (this.currentData[i].prices.waxpeer_avg7.price/100).toFixed(2) + '$' : '-'}</td>
-                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 50 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
-                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 50 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer_avg7.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td>${this.currentData[i].prices.csgotm.price != 0 ? (this.currentData[i].prices.csgotm.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.currentData[i].prices.waxpeer.price != 0 ? (this.currentData[i].prices.waxpeer.price/100).toFixed(2) + '$' : '-'}</td>
+                        <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 50 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.currentData[i].prices.csgotm.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.csgotm.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 50 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.currentData[i].prices.waxpeer.price - this.currentData[i].prices.buff163.price) != 0 ? ((this.currentData[i].prices.waxpeer.price - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${avgProfit}%</td>
                     </tr>
                 `
@@ -232,20 +232,20 @@ const table = {
                     return item.prices.buff163.price;
                 }
                 case 4: {
-                    return item.prices.csgotm_avg7.price;
+                    return item.prices.csgotm.price;
                 }
                 case 5: {
-                    return item.prices.waxpeer_avg7.price;
+                    return item.prices.waxpeer.price;
                 }
                 case 6: {
-                    return ((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
+                    return ((item.prices.csgotm.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
                 case 7: {
-                    return ((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price);
+                    return ((item.prices.waxpeer.price - item.prices.buff163.price)/item.prices.buff163.price);
                 }
                 case 8: {
-                    const profitTM = Math.round((item.prices.csgotm_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
-                    const profitWAX = Math.round((item.prices.waxpeer_avg7.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
+                    const profitTM = Math.round((item.prices.csgotm.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
+                    const profitWAX = Math.round((item.prices.waxpeer.price - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     return table.avgProfit([profitTM, profitWAX]);
                 }
             }
