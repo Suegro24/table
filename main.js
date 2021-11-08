@@ -334,14 +334,14 @@ const table = {
                 const text = e.target.result
                 const data = csvToArray(text);
                 table.currentData = table.data.filter(item => {
-                    let isFound = false;
-                    data.map(d => {
-                        if (item.name.toLowerCase().includes(d.name.toLowerCase()) && (d.exterior && item.name.toLowerCase().includes(d.exterior.toLowerCase()))) {
-                            isFound = true;
-                            return;
+                    let isStattrak = item.name.includes('StatTrak™');
+                    for (const d of data) {
+                        if (item.name.toLowerCase().includes(d.name.toLowerCase()) &&
+                           (d.exterior && item.name.toLowerCase().includes(d.exterior.toLowerCase())) &&
+                           ((isStattrak && d.name.includes("StatTrak™")) || !isStattrak)) {
+                            return item;
                         }
-                    })
-                    if (isFound) return item;
+                    }
                 }) 
                 table.createTable();
                 table.initSort();
