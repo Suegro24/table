@@ -48,14 +48,21 @@ const table = {
         index: 8
     }],
     run: async function() {
-        await this.loadData().then(() => {
-            this.createTable();
-            this.initSearch();
-            this.initSort();
-            this.initFilterForm();
-            this.initFileForm();
+        try {
+            await this.loadData().then(() => {
+                this.createTable();
+                this.initSearch();
+                this.initSort();
+                this.initFilterForm();
+                this.initFileForm();
+                this.initResetDataButton();
+            })
+        } catch(error) {
+            console.error(error);
+        } finally {
             this.toggleLoading(false);
-        })
+        }
+
     },
     loadData: async function() {
         await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=buff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
@@ -269,7 +276,7 @@ const table = {
         forms.forEach(form => {
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
-                let result = table.data;
+                let result = table.currentData;
                 forms.forEach((f, index) => {
                     const from = f.elements.namedItem('from').value;
                     const to = f.elements.namedItem('to').value;
@@ -352,6 +359,15 @@ const table = {
     },
     minOfValues: function(...values) {
         return Math.min(...values);
+    },
+    initResetDataButton: function() {
+        const resetDataButton = document.querySelector('#resetDataButton');
+        resetDataButton.addEventListener('click', this.resetData, false);
+    },
+    resetData: function() {
+        table.currentData = table.data;
+        table.createTable();
+        table.initSort();
     }
 }
 
