@@ -135,11 +135,9 @@ const table = {
     },
     search: function() {
         const searchedText = document.querySelector('#search').value;
+        if (searchedText.length < 3) return;
         if (searchedText.length === 0) {
             table.currentData = table.data
-        }
-        else if (searchedText.length < 3) {
-            return;
         }
         else {
             table.currentData = table.data.filter(item => item.name.toLowerCase().includes(searchedText.toLowerCase()));
@@ -324,11 +322,11 @@ const table = {
                       item.exterior = item.exterior.slice(0, item.exterior.length - 2);
                   }
                   if (item.name && item.name.startsWith(`\"`)) {
-                      item.name = item.name.slice(2, item.name.length - 2);
+                      item.name = item.name.slice(1, item.name.length - 2);
                   }
                   return item;
               })
-            
+              console.log(arr)
               return arr
         }
 
