@@ -48,41 +48,33 @@ const table = {
         index: 8
     }],
     run: async function() {
-        try {
-            await this.loadData().then(() => {
-                this.createTable();
-                this.initSearch();
-                this.initSort();
-                this.initFilterForm();
-                this.initFileForm();
-                this.initResetDataButton();
-            })
-        } catch(error) {
-            console.error(error);
-        } finally {
-            this.toggleLoading(false);
-        }
-
-    },
-    loadData: async function() {
         await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=buff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
-            .then(res => {
-                if (!res.ok) {
-                    alert('Failed to load data, please try again later');
-                }
-                return res.json()
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                const errorMessage = 'Failed to load data, retrying...';
+                throw new Error(errorMessage);
+            }
+        })
+        .then(data => {
+            const json = data;
+            json.items = json.items.filter(item => {
+                return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker') && !item.name.toLowerCase().includes('souvenir');
             })
-            .then(data => {
-                const json = data;
-                json.items = json.items.filter(item => {
-                    return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker') && !item.name.toLowerCase().includes('souvenir');
-                })
-                table.data = json.items;
-                table.currentData = json.items;
-            })
-            .catch(error => {
-                console.error(error);
-            })
+            table.data = json.items;
+            table.currentData = json.items;
+            this.createTable();
+            this.initSearch();
+            this.initSort();
+            this.initFilterForm();
+            this.initFileForm();
+            this.initResetDataButton();
+            table.toggleLoading(false);
+        })
+        .catch(error => {
+            this.run();
+        })
     },
     toggleLoading: async function(state) {
         const loading = document.querySelector('#loading');
@@ -326,7 +318,6 @@ const table = {
                   }
                   return item;
               })
-              console.log(arr)
               return arr
         }
 
@@ -368,5 +359,6 @@ const table = {
         table.initSort();
     }
 }
+
 
 table.run();
