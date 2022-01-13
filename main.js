@@ -60,7 +60,7 @@ const table = {
             })
             table.data = json.items;
             table.currentData = json.items;
-            this.initAll();
+            table.initAll();
         })
         .catch(() => {
             setTimeout(() => {
@@ -177,7 +177,7 @@ const table = {
         else {
             table.currentData = table.data.filter(item => item.name.toLowerCase().includes(searchedText.toLowerCase()));
         }
-        this.initAll();
+        table.initAll();
     },
     initSort: function() {
         const headers = document.querySelectorAll('.table tr th');
@@ -324,7 +324,7 @@ const table = {
                     }
                 })
                 table.currentData = result;
-                initAll();
+                table.initAll();
             });
         })
     },
@@ -375,7 +375,7 @@ const table = {
                         }
                     }
                 }) 
-                initAll();
+                table.initAll();
             };
 
             reader.readAsText(input);
@@ -390,7 +390,7 @@ const table = {
     },
     resetData: function() {
         table.currentData = table.data;
-        this.initAll();
+        table.initAll();
     },
     initRemoveButton: function() {
         const removeButtons = document.querySelectorAll('.button-remove');
@@ -408,7 +408,7 @@ const table = {
             this.currentData.push(this.removedData[index]);
             this.removedData.splice(index, 1);
         }
-        this.initAll();
+        table.initAll();
     }
 }
 
