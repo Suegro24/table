@@ -58,8 +58,8 @@ const table = {
             json.items = json.items.filter(item => {
                 return !item.name.toLowerCase().includes('sealed graffiti') && !item.name.toLowerCase().includes('sticker') && !item.name.toLowerCase().includes('souvenir');
             })
-            table.data = json.items.slice(0, 100);
-            table.currentData = json.items.slice(0, 100);
+            table.data = json.items;
+            table.currentData = json.items;
             this.initAll();
         })
         .catch(() => {
