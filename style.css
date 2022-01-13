@@ -4,6 +4,10 @@ body {
     margin: 0;
 }
 
+.position-relative {
+  position: relative;
+}
+
 .header {
   display: flex;
 }
@@ -50,9 +54,14 @@ body {
     cursor: pointer;
 }
 
+.tr-hidden {
+  opacity: .4;
+}
+
 .fixed {
   position: sticky;
   top: 0;
+  z-index: 1000;
 }
 
 .search {
@@ -144,4 +153,17 @@ body {
 
   .button-file {
     margin-top: 20px;
+  }
+
+  .button--red {
+    background-color: #f5310a;
+  }
+
+  .button-remove {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: fit-content;
+    padding: 3px 5px;
   }
