@@ -134,6 +134,7 @@ const table = {
                     const profitTM = Math.round((this.getItemValueByHeaderIndex(table.removedData[i], 3) - table.removedData[i].prices.buff163.price)/table.removedData[i].prices.buff163.price * 100);
                     const profitWAX = Math.round((this.getItemValueByHeaderIndex(table.removedData[i], 4) - table.removedData[i].prices.buff163.price)/table.removedData[i].prices.buff163.price * 100);
                     const avgProfit = (profitTM + profitWAX) / 2;
+<<<<<<< Updated upstream
                     const tr = document.createElement('tr');
 
                     this.removedData[i].index = i;
@@ -150,6 +151,18 @@ const table = {
                         <td>${this.getItemValueByHeaderIndex(table.removedData[i], 4) != 0 ? (this.getItemValueByHeaderIndex(table.removedData[i], 4)/100).toFixed(2) + '$' : '-'}</td>
                         <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 40 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(table.removedData[i], 3) - table.removedData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(table.removedData[i], 3) - table.removedData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 40 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(table.removedData[i], 4) - table.removedData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(table.removedData[i], 4) - table.removedData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+=======
+                    table += `
+                    <tr>
+                        <td>${this.currentData[i].name}</td>
+                        <td>${this.currentData[i].steamVolume != 0 ? this.currentData[i].steamVolume : '-'}</td>
+                        <td>${Math.round(this.currentData[i].liquidity * 100)/100}</td>
+                        <td>${this.currentData[i].prices.buff163.price != 0 ? (this.currentData[i].prices.buff163.price/100).toFixed(2) + '$' : '-'}</th>
+                        <td>${this.getItemValueByHeaderIndex(this.currentData[i], 4) != 0 ? (this.getItemValueByHeaderIndex(this.currentData[i], 4)/100).toFixed(2) + '$' : '-'}</td>
+                        <td>${this.getItemValueByHeaderIndex(this.currentData[i], 5) != 0 ? (this.getItemValueByHeaderIndex(this.currentData[i], 5)/100).toFixed(2) + '$' : '-'}</td>
+                        <td class="${profitTM <= 15 ? 'background-red' : profitTM <= 25 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 4) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+                        <td class="${profitWAX <= 15 ? 'background-red' : profitWAX <= 25 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(this.currentData[i], 5) - this.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
+>>>>>>> Stashed changes
                         <td>${avgProfit}%</td>
                         <button class="button button--red button-remove">X</button>`
                     tableView.appendChild(tr);
