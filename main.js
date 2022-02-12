@@ -42,9 +42,14 @@ const table = {
         name: 'Avg. TM/WAX',
         sort: 'unsorted',
         index: 7
+    },
+    {
+        name: 'Buff/Steam',
+        sort: 'unsorted',
+        index: 8
     }],
     run: async function() {
-        await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=buff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
+        await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=steam_listing%2Cbuff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
         .then(res => {
             if (res.ok) {
                 return res.json();
@@ -122,6 +127,7 @@ const table = {
                         <td class="${profitTM <= 15 ? 'background-red' : profitTM <= 25 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(table.currentData[i], 3) - table.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(table.currentData[i], 3) - table.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td class="${profitWAX <= 15 ? 'background-red' : profitWAX <= 25 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(table.currentData[i], 4) - table.currentData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(table.currentData[i], 4) - table.currentData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${avgProfit}%</td>
+                        <td>${this.getItemValueByHeaderIndex(table.currentData[i], 8)}%</td>
                         <button class="button button--red button-remove">X</button>`
                     tableView.appendChild(tr);
                 } catch(error) {
@@ -151,6 +157,7 @@ const table = {
                         <td class="${profitTM <= 25 ? 'background-red' : profitTM <= 40 ? 'background-yellow' : 'background-green'}">${ profitTM > -100 ? profitTM + '% ' : '-'}(${(this.getItemValueByHeaderIndex(table.removedData[i], 3) - table.removedData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(table.removedData[i], 3) - table.removedData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td class="${profitWAX <= 25 ? 'background-red' : profitWAX <= 40 ? 'background-yellow' : 'background-green'}">${ profitWAX > -100 ? profitWAX + '% ' : '-'}(${(this.getItemValueByHeaderIndex(table.removedData[i], 4) - table.removedData[i].prices.buff163.price) != 0 ? ((this.getItemValueByHeaderIndex(table.removedData[i], 4) - table.removedData[i].prices.buff163.price)/100).toFixed(2) + '$' : '-'})</td>
                         <td>${avgProfit}%</td>
+                        <td>${this.getItemValueByHeaderIndex(table.removedData[i], 8)}%</td>
                         <button class="button button--red button-remove">X</button>`
                     tableView.appendChild(tr);
                 } catch(error) {
@@ -283,6 +290,9 @@ const table = {
                     const profitWAX = Math.round((table.getItemValueByHeaderIndex(item, 4) - item.prices.buff163.price)/item.prices.buff163.price * 100);
                     return table.avgProfit([profitTM, profitWAX]);
                 }
+                case 8: {
+                    return (Math.round(item.prices.buff163.price/item.prices.steam_listing.price * 100));
+                }
             }
         } catch(error) {
             return undefined;
@@ -317,9 +327,13 @@ const table = {
                         result = result.filter(item => {
                             return table.getItemValueByHeaderIndex(item, 1) >= from && table.getItemValueByHeaderIndex(item, 1) <= to
                         })
-                    } else {
+                    } else if (index == 2) {
                         result = result.filter(item => {
                             return table.getItemValueByHeaderIndex(item, 7) >= from && table.getItemValueByHeaderIndex(item, 7) <= to
+                        })
+                    } else {
+                        result = result.filter(item => {
+                            return table.getItemValueByHeaderIndex(item, 8) >= from && table.getItemValueByHeaderIndex(item, 8) <= to
                         })
                     }
                 })
