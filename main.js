@@ -49,7 +49,7 @@ const table = {
         index: 8
     }],
     run: async function() {
-        await fetch('https://api.pricempire.com/v1/getAllItems?token=f8155bd3-91f5-4279-9e93-52d166ab71e5&source=steam_listing%2Cbuff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD&fbclid=IwAR1vcquhpLO8HeNP9ZH-R_ks5sxCI5-qBnc-R2Ax27jdbmaVTP60tum0yFI')
+        await fetch('https://api.pricempire.com/v1/getAllItems?token=266b7f04-b938-4ce1-ba3f-be952bacebd7&source=steam_listing%2Cbuff163%2Ccsgotm%2Cwaxpeer%2Cshadowpay&currency=USD')
         .then(res => {
             if (res.ok) {
                 return res.json();
